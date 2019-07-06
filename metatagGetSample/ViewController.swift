@@ -17,7 +17,6 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        items.append(Item())
         
         self.refreshItem = UIBarButtonItem(title: "更新", style: .done
             , target: self, action: #selector(ViewController.refresh))

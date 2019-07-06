@@ -33,12 +33,29 @@ class WebViewController: UIViewController, WKUIDelegate {
         let myURL = URL(string:"https://www.google.com")
         let myRequest = URLRequest(url: myURL!)
         webView.load(myRequest)
-        
-        items.append(Item())
-    
     }
     
     @objc func add(){
-        print("ここで追加")
+        self.webView?.evaluateJavaScript("document.getElementsByTagName('html')[0].innerHTML", completionHandler: { (html, error) -> Void in
+            if let html = html{
+                let metas = htmlPaser.parse(htmlString: html as! String)
+                let parseMetas = htmlPaser.parseMetasGet(htmlString: html as! NSString, textCheckingResults:metas)
+                
+                let title = parseMetas["og:title"] ?? "titleなし"
+                let description = parseMetas["og:description"] ?? "詳細内容なし"
+                let image = parseMetas["og:image"] ?? ""
+                let url = parseMetas["og:url"] ?? ""
+                
+                let item = Item(title: title, discription: description, image: image, url: url)
+                
+                items.append(item)
+                
+            }
+            
+            if let error = error{
+                let errorText = error.localizedDescription
+                print("\(errorText)")
+            }
+        })
     }
 }

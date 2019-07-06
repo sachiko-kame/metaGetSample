@@ -9,11 +9,16 @@
 import UIKit
 
 struct Item {
+    
     let title:String
     let discription:String
+    let image:String
+    let url:String
     
-    init(){
-        self.title = "a"
-        self.discription = "aaa"
+    init(title:String, discription:String, image:String, url:String){
+        self.title = title
+        self.discription = discription
+        self.image = image
+        self.url = url
     }
 }
