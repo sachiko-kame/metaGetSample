@@ -50,6 +50,16 @@ class WebViewController: UIViewController, WKUIDelegate {
                 
                 items.append(item)
                 
+                let alert: UIAlertController = UIAlertController(title: "値を保存しました。戻って更新ボタンを押してください。", message: "\(item)", preferredStyle: .alert)
+                
+                let defaultAction: UIAlertAction = UIAlertAction(title: "OK", style: .default, handler:{
+                    (action: UIAlertAction!) -> Void in
+                    print("OK")
+                })
+            
+                alert.addAction(defaultAction)
+                self.present(alert, animated: true, completion: nil)
+            
             }
             
             if let error = error{
