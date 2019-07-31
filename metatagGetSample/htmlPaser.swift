@@ -8,11 +8,22 @@
 
 import UIKit
 
+enum patternType{
+    case meta
+    
+    var patternText:String{
+        switch self {
+        case .meta:
+            return "<meta\\sproperty=(?:\"|\')(og|article):([a-zA_Z:]+?)(?:\"|\')\\scontent=\"(.*?)\""
+        }
+    }
+}
+
 class htmlPaser: NSObject {
     
-    static func parse(htmlString: String) -> [NSTextCheckingResult]{
+    static func parse(htmlString: String, patternText:String) -> [NSTextCheckingResult]{
         let metatagRegex  = try! NSRegularExpression(
-            pattern: "<meta\\sproperty=(?:\"|\')(og|article):([a-zA_Z:]+?)(?:\"|\')\\scontent=\"(.*?)\"",
+            pattern: patternText,
             options: [.dotMatchesLineSeparators]
         )
         let metaTagMatches = metatagRegex.matches(in: htmlString,
@@ -25,11 +36,11 @@ class htmlPaser: NSObject {
         }
     }
     
-    static func parseMetasGet(htmlString: NSString, textCheckingResults:[NSTextCheckingResult]) -> [String:String]{
+    static func parseMetasGet(htmlString: NSString, patternText:String, textCheckingResults:[NSTextCheckingResult]) -> [String:String]{
         var parseMetas:[String:String] = [:]
         textCheckingResults.forEach {
             let withRange:NSString = htmlString.substring(with: NSRange(location: $0.range.location, length: ($0.range.length))) as NSString
-            let regularExpression:String = "^<meta\\sproperty=(?:\"|\')(og|article):([a-zA_Z:]+?)(?:\"|\')\\scontent=\"(.*?)\""
+            let regularExpression:String = patternText
             let rd = try? NSRegularExpression(pattern: regularExpression, options: NSRegularExpression.Options())
             
             if let r = rd?.firstMatch(in: withRange as String, options: NSRegularExpression.MatchingOptions(), range: NSMakeRange(0, withRange.length)) {

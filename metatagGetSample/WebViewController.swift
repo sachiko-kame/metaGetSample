@@ -38,8 +38,8 @@ class WebViewController: UIViewController, WKUIDelegate {
     @objc func add(){
         self.webView?.evaluateJavaScript("document.getElementsByTagName('html')[0].innerHTML", completionHandler: { (html, error) -> Void in
             if let html = html{
-                let metas = htmlPaser.parse(htmlString: html as! String)
-                let parseMetas = htmlPaser.parseMetasGet(htmlString: html as! NSString, textCheckingResults:metas)
+                let metas = htmlPaser.parse(htmlString: html as! String, patternText: patternType.meta.patternText)
+                let parseMetas = htmlPaser.parseMetasGet(htmlString: html as! NSString, patternText:patternType.meta.patternText, textCheckingResults:metas)
                 
                 let title = parseMetas["og:title"] ?? "titleなし"
                 let description = parseMetas["og:description"] ?? "詳細内容なし"
